@@ -1,0 +1,80 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <title>Top Animation</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://connect.soundcloud.com/sdk.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-animate.min.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="js/script.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body id="posts" onload="return ran_col()" ng-controller="SongController">
+        <h1 align="center">UC Davis IET SoundCloud</h1>
+        <div class="col-md-2 col-md-push-5" id="player">
+           <center><h2 class="col-md-5 col-md-push-5">Music Player</h2></center>
+            <iframe src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/57348527/favorites&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+        </div>
+        <div id="form">
+            <h2>Genre: </h2> <input type="text" ng-model="tracks" /><br />
+            <button ng-click="onclick()">Click Me For Songs!</button>
+            <button ng-click="addTo()">Add to Playlist</button>
+            <div>
+                <script type="text/ng-template" id="myModalContent.html">
+                    <div class="modal-header" id="modal_view">
+                        <h3 class="modal-title">Selected Song</h3>
+                    </div>
+                    <div class="modal-body">
+                        <ul>
+                            {{selectedSongs[index].songs.title}}
+                        </ul>
+                        {{selectedSongs.title}}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" ng-click="playSong()">Play Song</button>
+                        <button class="btn btn-primary" ng-click="delete()">Delete Song</button>
+                        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                    </div>
+                </script>
+                <!--<button ng-click='toggleModal()'>Open Modal Dialog</button>-->
+            </div>
+            <div class="well" style="margin-top: 30px; width: 300px; overflow: hidden;">
+                <form class="form-search">
+                    <h3>Search Bar</h3>
+                    <div class="input-append">
+                        <input type="text" ng-model="search" class="search-query" style="width: 80px">
+                        <button type="submit" class="btn">Search</button>
+                    </div>
+                    <ul class="nav nav-pills nav-stacked">
+
+                        <li ng-repeat="song in selectedSongs">{{song.title}}</li>
+                        <li ng-animate="'animate'" ng-repeat="track in songs | filter:search | limitTo:10">
+                            <input type="checkbox" ng-model="track.selected">
+                            <a href="#"> {{track.title}} - {{track.genre}} - {{track.playback_count}} plays
+                                <img src ="{{track.artwork_url}}"/>
+                            </a>
+                        </li>
+
+                    </ul>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-md-push-6" id="playlist">
+            <table id="table_div" class="table table-hover table-bordered">
+                <thead><center><h2>Personal Playlist:</h2></center></thead>
+                <tbody><tr><td><center><b>Track Title</b></center></td></tr></tbody>
+                <tbody>
+                    <tr ng-repeat="selected in selectedSongs">
+                        <td><button class="btn btn-default" ng-click="open(selected.index)">{{selected.songs.title}}</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</body>
+</html>
+
